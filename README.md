@@ -1,4 +1,6 @@
-# INSTRUCTIONS FOR THE STANDALONE SCRIPTS
+# DUDEeval 
+
+This repository will help participants of DUDE @ICDAR2023 to set up their submission and validate results on sample data. 
 
 ## Installation
 
@@ -22,17 +24,22 @@ Open a terminal in the directory and run the command:
 python3 evaluate_submission.py -g=gt/DUDE_demo_gt.json -s=submissions/DUDE_demo_submission_perfect.json
 ```
 
-parameters:
+### parameters:
+
 -g: Path of the Ground Truth file. The Ground Truth file is the one provided for the competition. You will be able to get it on the Downloads page of the Task in the Competition portal.
+
 -s: Path of your method's results file.
  
-Optional parameters:
+#### Optional parameters:
+
 -t: ANLS threshold. By default 0.5 is used. This can be used to check the tolerance to OCR errors. See Scene-Text VQA paper for more info.
+
 -a: Boolean to get the scores break down by types. The ground truth file is required to have such information (currently is not available to the public).
+
 -o: Path to a directory where to copy the file 'results.json' that contains per-sample results.
+
 -c: Measure ECE for scoring calibration of answer confidences
 
 ### Bonus:
 
-To pretty print a JSON file you can use:
-`python -m json.tool file.json`
+To pretty print a JSON submission file you can use: `python -m json.tool file.json`
