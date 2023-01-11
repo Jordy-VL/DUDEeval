@@ -1,0 +1,60 @@
+[
+    {
+        "questionId": "7afe94621751eb3584a4a9962bb7b1f0_489ae4ece55ed1af97a542845d3ba6d3",
+        "answers": ["No"],
+        "answers_confidence": [0.8]
+    },
+    {
+        "questionId": "c228ef8e4149d1532e833f76fe6de2d2_b1816832f28da57fb863a185299e96b2",
+        "answers": ["3"],
+        "answers_confidence": [0.4]
+    },
+    {
+        "questionId": "ca7c6dcd92fd573c8ad4cb79b0de525a_53fb47e11ac9c8c18ad9e53045d39039",
+        "answers": ["No"],
+        "answers_confidence": [0.99]
+    },
+    {
+        "questionId": "7afe94621751eb3584a4a9962bb7b1f0_4a863bed9b999dec79f6181f7a823e4a",
+        "answers": ["1894"],
+        "answers_confidence": [0.6]
+    },
+    {
+        "questionId": "c228ef8e4149d1532e833f76fe6de2d2_8cd51553579ec302b46b4d2837143cf8",
+        "answers": ["1924"],
+        "answers_confidence": [0.89]
+    },
+    {
+        "questionId": "95a82e8934b11e4dca41789f4a70caa3_7b58d9ec29ce6f75d82025df8e6aa91d",
+        "answers": ["Moscow - Russia - Terminal E - International"],
+        "answers_confidence": [0.4]
+    },
+    {
+        "questionId": "32f61c097aa230d75bcb93248db87785_d966a58b08dfd5ba52166e5fa2f1ff67",
+        "answers": ["41%"],
+        "answers_confidence": [0.75]
+    },
+    {
+        "questionId": "9a2f84b54389aa435486a84c89069942_75bdac76d12afee4a07c2a870dcfbbf5",
+        "answers": ["National Archives & Records Administration"],
+        "answers_confidence": [0.95]
+    },
+    {
+        "questionId": "ff1549ddf50c82edd169dee714a38339_9dc0d59810e040b8ec7516667aa289a4",
+        "answers": [""],
+        "answers_confidence": [0.3]
+    },
+    {
+        "questionId": "ff1549ddf50c82edd169dee714a38339_4fa9fe07c5b3f0680ef68da40c92e51a",
+        "answers": [""],
+        "answers_confidence": [0.3]
+    },
+    {
+        "questionId": "manual_test",
+        "answers": [
+            "AF0055",
+            "AF1044"
+        ],
+        "answers_confidence": [0.7]
+    }
+]

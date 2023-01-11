@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "DUDEeval"
+version = "0.1.0"
+description = "standalone evaluation scripts for DUDE"
+authors = ["Ruben <rperez@cvc.uab.cat>","Jordy <jordy@contract.fit>"]
+
+readme = 'README.md'  # Markdown files are supported
+keywords = ['research', 'evaluation', 'VQA', 'calibration']
+
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Web Environment",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+numpy = "^1.24.1"
+munkres = "^1.1.4"
+evaluate = "^0.4.0"
+scikit-learn = "^1.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.10.1"
+pytest-cov = "^2.9.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.masonry.api"

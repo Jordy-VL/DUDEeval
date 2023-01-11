@@ -1,0 +1,191 @@
+{
+    "dataset_name": "DUDE Dataset",
+    "dataset_version": "0.1",
+    "data": [
+        {
+            "questionId": "7afe94621751eb3584a4a9962bb7b1f0_489ae4ece55ed1af97a542845d3ba6d3",
+            "question": "Is there some type of handwritten text on each page of the document?",
+            "answers": [
+                "Yes"
+            ],
+            "answers_page_bounding_boxes": [],
+            "answers_variants": [],
+            "answer_type": "abstractive",
+            "docId": "7afe94621751eb3584a4a9962bb7b1f0",
+            "data_split": "train"
+        },
+        {
+            "questionId": "c228ef8e4149d1532e833f76fe6de2d2_b1816832f28da57fb863a185299e96b2",
+            "question": "How many instances of handwriting are in this document?",
+            "answers": [
+                "2"
+            ],
+            "answers_page_bounding_boxes": [],
+            "answers_variants": [],
+            "answer_type": "abstractive",
+            "docId": "c228ef8e4149d1532e833f76fe6de2d2",
+            "data_split": "train"
+        },
+        {
+            "questionId": "ca7c6dcd92fd573c8ad4cb79b0de525a_53fb47e11ac9c8c18ad9e53045d39039",
+            "question": "Does each page of the document has a logo on it?",
+            "answers": [
+                "No"
+            ],
+            "answers_page_bounding_boxes": [],
+            "answers_variants": [],
+            "answer_type": "abstractive",
+            "docId": "ca7c6dcd92fd573c8ad4cb79b0de525a",
+            "data_split": "train"
+        },
+        {
+            "questionId": "7afe94621751eb3584a4a9962bb7b1f0_4a863bed9b999dec79f6181f7a823e4a",
+            "question": "In what year was the marriage certificate signed/stamped.",
+            "answers": [
+                "1894"
+            ],
+            "answers_page_bounding_boxes": [
+                [
+                    {
+                        "left": 185,
+                        "top": 70,
+                        "width": 299,
+                        "height": 74,
+                        "page": 0
+                    },
+                    {
+                        "left": 953,
+                        "top": 287,
+                        "width": 138,
+                        "height": 69,
+                        "page": 0
+                    }
+                ]
+            ],
+            "answers_variants": [],
+            "answer_type": "extractive",
+            "docId": "7afe94621751eb3584a4a9962bb7b1f0",
+            "data_split": "train"
+        },
+        {
+            "questionId": "c228ef8e4149d1532e833f76fe6de2d2_8cd51553579ec302b46b4d2837143cf8",
+            "question": "What tax year is the document for?",
+            "answers": [
+                "1924"
+            ],
+            "answers_page_bounding_boxes": [
+                [
+                    {
+                        "left": 1028,
+                        "top": 607,
+                        "width": 205,
+                        "height": 83,
+                        "page": 0
+                    }
+                ]
+            ],
+            "answers_variants": [],
+            "answer_type": "extractive",
+            "docId": "c228ef8e4149d1532e833f76fe6de2d2",
+            "data_split": "train"
+        },
+		{
+			"questionId": "95a82e8934b11e4dca41789f4a70caa3_7b58d9ec29ce6f75d82025df8e6aa91d",
+			"question": "What is the destination of Air France flight #1044?",
+			"answers": [
+				"Moscow Sheremet, Russia - Terminal E - International"
+			],
+			"answers_page_bounding_boxes": [
+				[
+					{
+						"left": 962,
+						"top": 413,
+						"width": 183,
+						"height": 223,
+						"page": 4
+					}
+				]
+			],
+			"answers_variants": [],
+			"answer_type": "extractive",
+			"docId": "95a82e8934b11e4dca41789f4a70caa3",
+			"data_split": "train"
+		},
+        {
+            "questionId": "32f61c097aa230d75bcb93248db87785_d966a58b08dfd5ba52166e5fa2f1ff67",
+            "question": "What percentage of young people don't take out travel insurance when they travel abroad because they think it is too espensive.",
+            "answers": [
+                "42%"
+            ],
+            "answers_page_bounding_boxes": [
+                [
+                    {
+                        "left": 1282,
+                        "top": 1465,
+                        "width": 352,
+                        "height": 193,
+                        "page": 0
+                    }
+                ]
+            ],
+            "answers_variants": [],
+            "answer_type": "extractive",
+            "docId": "32f61c097aa230d75bcb93248db87785",
+            "data_split": "train"
+        },
+        {
+            "questionId": "9a2f84b54389aa435486a84c89069942_75bdac76d12afee4a07c2a870dcfbbf5",
+            "question": "What does NARA stand for?",
+            "answers": [
+                "National Archives and Records Administration"
+            ],
+            "answers_page_bounding_boxes": [
+                [
+                    {
+                        "left": 252,
+                        "top": 892,
+                        "width": 762,
+                        "height": 61,
+                        "page": 0
+                    }
+                ]
+            ],
+            "answers_variants": [
+                "The National Archives and Records Administration"
+            ],
+            "answer_type": "extractive",
+            "docId": "9a2f84b54389aa435486a84c89069942",
+            "data_split": "train"
+        },
+		{
+			"questionId": "ff1549ddf50c82edd169dee714a38339_9dc0d59810e040b8ec7516667aa289a4",
+			"question": "who arrived in Hawaii in march 19 1998?",
+			"answers": [""],
+			"answers_page_bounding_boxes": [],
+			"answers_variants": [],
+			"answer_type": "not answerable",
+			"docId": "ff1549ddf50c82edd169dee714a38339",
+			"data_split": "train"
+		},
+		{
+            "questionId": "ff1549ddf50c82edd169dee714a38339_4fa9fe07c5b3f0680ef68da40c92e51a",
+            "question": "What millitary vehicle is the Vice Admiral in the image on page 3 driving?",
+            "answers": [""],
+            "answers_page_bounding_boxes": [],
+            "answers_variants": [],
+            "answer_type": "not answerable",
+            "docId": "ff1549ddf50c82edd169dee714a38339",
+            "data_split": "train"
+        },
+        {
+            "questionId": "manual_test",
+            "question": "What are the flight numbers from going to Washington to Moscow?",
+            "answers": ["AF0055", "AF1044"],
+            "answers_page_bounding_boxes": [],
+            "answers_variants": [],
+            "answer_type": "extractive",
+            "docId": "ff1549ddf50c82edd169dee714a38339",
+            "data_split": "train"
+        }
+    ]
+}
