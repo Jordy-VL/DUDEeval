@@ -1,16 +1,20 @@
-import os, json
-import logging
 import argparse
-import numpy as np
-from munkres import Munkres, print_matrix, make_cost_matrix
+import json
+import logging
+import os
+
 import evaluate as HF_evaluate
+import numpy as np
+from munkres import Munkres, make_cost_matrix
 
 question_ids_to_exclude = []
 
 answer_types = {
     "abstractive": "Abstractive",
     "extractive": "Extractive",
-    "not answerable": "Not Answerable",
+    "not-answerable": "Not Answerable",
+    #"list/abstractive": "Abstractive List",
+    #"list/extractive": "Extractive List"
 }
 
 
@@ -116,16 +120,16 @@ def validate_data(gtFilePath, submFilePath):
     gtJson = json.load(open(gtFilePath, "rb"))
     submJson = json.load(open(submFilePath, "rb"))
 
-    if not "data" in gtJson:
+    if "data" not in gtJson:
         raise Exception("The GT file is not valid (no data key)")
 
-    if not "dataset_name" in gtJson:
+    if "dataset_name" not in gtJson:
         raise Exception("The GT file is not valid (no dataset_name key)")
 
     if gtJson["dataset_name"] != "DUDE Dataset":
         raise Exception("The GT file is not valid dataset_name should be DUDE Dataset")
 
-    if isinstance(submJson, list) == False:
+    if isinstance(submJson, list) is False:
         raise Exception("The Det file is not valid (root item must be an array)")
 
     if len(submJson) != len(gtJson["data"]):
@@ -141,7 +145,7 @@ def validate_data(gtFilePath, submFilePath):
     res_id_to_index = {str(r["questionId"]): ix for ix, r in enumerate(submJson)}
     detQuestions = sorted([str(r["questionId"]) for r in submJson])
 
-    if (gtQuestions == detQuestions) == False:
+    if (gtQuestions == detQuestions) is False:
         print(len(gtQuestions), len(detQuestions))
         print(len(set(gtQuestions).intersection(detQuestions)))
         print(gtQuestions[0], detQuestions[0])
@@ -163,13 +167,14 @@ def validate_data(gtFilePath, submFilePath):
         else:
             detObject = submJson[res_ix]
 
-            if not "answers" in detObject:
+            if "answers" not in detObject:
                 raise Exception(
                     "Question " + str(gtObject["questionId"]) + " not valid (no answer key)"
                 )
+    return gtJson, submJson
 
 
-def evaluate_method(gtFilePath, submFilePath, evaluationParams):
+def evaluate_method(gtJson, submJson, evaluationParams):
     """
     Method evaluate_method: evaluate method and returns the results
         Results. Dictionary with the following values:
@@ -178,9 +183,6 @@ def evaluate_method(gtFilePath, submFilePath, evaluationParams):
     """
 
     show_scores_per_question_type = evaluationParams.answer_types
-
-    gtJson = json.load(open(gtFilePath, "rb"))
-    submJson = json.load(open(submFilePath, "rb"))
 
     res_id_to_index = {str(r["questionId"]): ix for ix, r in enumerate(submJson)}
 
@@ -204,8 +206,14 @@ def evaluate_method(gtFilePath, submFilePath, evaluationParams):
 
         else:
             info = ""
-
-            if "list" in gtObject["answers_variants"]:  # or multiple predicted?
+            
+            if gtObject["answer_type"] == 'not-answerable': #gracefully deal with not-answerable
+                if gtObject["answers"] == []:
+                    gtObject["answers"] = ['']
+                if detObject["answers"] == []:
+                    detObject["answers"] = ['']
+            
+            if "list" in gtObject["answer_type"]:  
                 question_result = get_NLSL(gtObject["answers"], detObject["answers"])
 
             else:
@@ -254,7 +262,7 @@ def evaluate_method(gtFilePath, submFilePath, evaluationParams):
             p_answers.append(confidence)
 
         if len(y_correct) == len(perSampleMetrics):  # checks all calculations valid
-            y_correct = [0 if x == 1 else 1 for x in y_correct] #since ECE expects class size vectors
+            y_correct = [0 if x == 1 else 1 for x in y_correct] #since ECE expects class size vectors [argmax in 1D]
             y_correct = np.array(y_correct).astype(int)
             p_answers = np.array(p_answers).astype(np.float32)
 
@@ -354,10 +362,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Validate the format of ground truth and submission files.
-    validate_data(args.ground_truth, args.submission_file)
+    gtJson, submJson = validate_data(args.ground_truth, args.submission_file)
 
     # Evaluate method
-    results = evaluate_method(args.ground_truth, args.submission_file, args)
+    results = evaluate_method(gtJson, submJson, args)
 
     display_results(results, args.answer_types)
 
