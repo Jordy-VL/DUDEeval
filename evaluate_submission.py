@@ -181,7 +181,9 @@ def evaluate_method(gtJson, submJson, evaluationParams):
         - method (required)  Global method metrics. Ex: { 'Precision':0.8,'Recall':0.9 }
         - samples (optional) Per sample metrics. Ex: {'sample1' : { 'Precision':0.8,'Recall':0.9 } , 'sample2' : { 'Precision':0.8,'Recall':0.9 }
     """
-
+    if evaluationParams.score_abstention: #confidences required to evaluate phase2
+        evaluationParams.score_calibration = True
+        
     show_scores_per_question_type = evaluationParams.answer_types
 
     res_id_to_index = {str(r["questionId"]): ix for ix, r in enumerate(submJson)}
@@ -236,6 +238,9 @@ def evaluate_method(gtJson, submJson, evaluationParams):
             "answer_confidence": detObject.get("answers_confidence", -1),
             "info": info,
         }
+        if evaluationParams.score_abstention:
+            perSampleMetrics[str(gtObject["questionId"])]["should_abstain"] = bool(gtObject["data_split"] == "test2")
+            perSampleMetrics[str(gtObject["questionId"])]["abstained"] = detObject.get("answers_abstain", -1)
         row = row + 1
 
     methodMetrics = {
@@ -261,8 +266,8 @@ def evaluate_method(gtJson, submJson, evaluationParams):
                 break
             p_answers.append(confidence)
 
-        if len(y_correct) == len(perSampleMetrics):  # checks all calculations valid
-            y_correct = [0 if x == 1 else 1 for x in y_correct] #since ECE expects class size vectors [argmax in 1D]
+        if len(y_correct) == len(perSampleMetrics):  # all samples should have valid confidences
+            y_correct = np.logical_not(y_correct) #since ECE expects class size vectors [argmax in 1D]
             y_correct = np.array(y_correct).astype(int)
             p_answers = np.array(p_answers).astype(np.float32)
 
@@ -280,7 +285,42 @@ def evaluate_method(gtJson, submJson, evaluationParams):
                 references=y_correct, predictions=np.expand_dims(p_answers, -1), **kwargs
             )
             methodMetrics.update(ece_result)
+    
+    if evaluationParams.score_abstention:
+        from failure_detection import aurc_phase2, AUROC_phase2
+        y_abstain_correct = [] #1 if model predicted correctly not to abstain, 0 if wrongly abstained or should not abstain
+        y_IID = [] #1 if IID, 0 if OOD
+        
+        def abstain_correctness(m): 
+            #confidence relates to expected accuracy in not abstaining
+            res = -1
+            if m["should_abstain"]:
+                if m["abstained"]:
+                    res = 1
+                else:
+                    res = 0
+            if not m["should_abstain"]:
+                if m["abstained"]:
+                    res = 0 
+                else:
+                    res = 1
+            return res                
+            
+        for q in perSampleMetrics:
+            y_IID.append(int(perSampleMetrics[q]["should_abstain"] is False))
+            y_abstain_correct.append(abstain_correctness(perSampleMetrics[q]))
 
+        #fail-AUROC: measure ranking of negative (out-of-domain) versus positive (in-domain) instances
+        AUROC_result = AUROC_phase2(y_IID, p_answers) #detection/ranking by confidence of IID and OOD; pos=1
+        methodMetrics.update(AUROC_result)
+        
+        #general metric for selective classification, success and failure is defined as correctness regardless of distribution shift
+        aurc_result = aurc_phase2(np.logical_not(y_correct).astype(int), p_answers) #acc-conf ranking
+        methodMetrics.update(aurc_result)
+        
+        #TODO: abstention_F1 can be reported as well instead of abstention accuracy (imbalance between two test sets)
+        ##y_abstain_correct
+        
     answer_types_ANLS = {}
 
     if show_scores_per_question_type:
@@ -303,7 +343,9 @@ def display_results(results, show_answer_page_position):
     print("\nOverall ANLS: {:1.4f}\n".format(results["result"]["anls"]))
     if "ECE" in results["result"]:
         print("\nOverall ECE: {:1.4f}\n".format(results["result"]["ECE"]))
-
+    if "AUROC" in results["result"]:
+        print("\nOverall aurc: {:1.4f}\n".format(results["result"]["aurc"]))
+        print("\nOverall AUROC_ood: {:1.4f}\n".format(results["result"]["AUROC"]))
     if show_answer_page_position:
         print("Answer type \t ANLS")
         for answer_type in answer_types.values():
@@ -355,6 +397,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "-c",
         "--score_calibration",
+        default=False,
+        action="store_true",
+        required=False,
+    )
+    parser.add_argument(
+        "-abs",
+        "--score_abstention",
         default=False,
         action="store_true",
         required=False,
