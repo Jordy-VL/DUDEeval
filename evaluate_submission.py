@@ -286,6 +286,11 @@ def evaluate_method(gtJson, submJson, evaluationParams):
             )
             methodMetrics.update(ece_result)
     
+
+            #general metric for selective classification, success and failure is defined as correctness regardless of distribution shift
+            aurc_result = aurc_phase2(np.logical_not(y_correct).astype(int), p_answers) #acc-conf ranking
+            methodMetrics.update(aurc_result)
+    
     if evaluationParams.score_abstention:
         from failure_detection import aurc_phase2, AUROC_phase2
         y_abstain_correct = [] #1 if model predicted correctly not to abstain, 0 if wrongly abstained or should not abstain
@@ -313,10 +318,6 @@ def evaluate_method(gtJson, submJson, evaluationParams):
         #fail-AUROC: measure ranking of negative (out-of-domain) versus positive (in-domain) instances
         AUROC_result = AUROC_phase2(y_IID, p_answers) #detection/ranking by confidence of IID and OOD; pos=1
         methodMetrics.update(AUROC_result)
-        
-        #general metric for selective classification, success and failure is defined as correctness regardless of distribution shift
-        aurc_result = aurc_phase2(np.logical_not(y_correct).astype(int), p_answers) #acc-conf ranking
-        methodMetrics.update(aurc_result)
         
         #TODO: abstention_F1 can be reported as well instead of abstention accuracy (imbalance between two test sets)
         ##y_abstain_correct
